@@ -1,48 +1,27 @@
+"use strict";
+
 const secondHand = document.querySelector('.second-hand');
 const minuteHand = document.querySelector('.min-hand');
 const hourHand = document.querySelector('.hour-hand');
+const hands = [secondHand,minuteHand,hourHand];
 
-const updateClockHands = () => {
-    updateHourHand();
-    updateMinuteHand();
-    updateSecondHand();
-};
-
-const getCurrentUnitOfTime = (unit) => {
-    const now = new Date();
-    switch (unit) {
-    case "hours": 
-        return now.getHours();
-        break;
-    case "minutes":
-        return now.getMinutes();
-        break;
-    case "seconds":
-        return now.getSeconds();
-        break;
-    default:
-        console.log('Measurement of time not supported.');
-        break;
-    };
-};
+const getNewDate = () => {
+    return new Date;
+}
 
 const transformClockHand = (attr, degrees) => { 
     attr.style.transform = `rotate(${degrees}deg)`;
 };
 
-const updateHourHand = () => {
-    const hoursDegrees = ((getCurrentUnitOfTime("hours") / 12) * 360) + 90;
-    transformClockHand(hourHand, hoursDegrees);
-}
+const updateClockHands = () => {
+    const hoursDegrees = (( getNewDate().getHours() / 12) * 360) + 90;
+    const minutesDegrees = (( getNewDate().getMinutes() / 60) * 360) + 90;
+    const secondsDegrees = (( getNewDate().getSeconds() / 60) * 360) + 90;
+    const degreeArray = [secondsDegrees, minutesDegrees, hoursDegrees];
 
-const updateMinuteHand = () => {
-    const minutesDegrees = ((getCurrentUnitOfTime("minutes") / 60) * 360) + 90;
-    transformClockHand(minuteHand, minutesDegrees);
-}
-
-const updateSecondHand = () => {
-    const secondsDegrees = ((getCurrentUnitOfTime("seconds") / 60) * 360) + 90;
-    transformClockHand(secondHand, secondsDegrees);
+    hands.forEach((hand, id) => {
+        transformClockHand(hand, degreeArray[id]);
+    }) 
 };
 
 setInterval(updateClockHands, 1000);
